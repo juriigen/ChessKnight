@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.forexperts.cavalier.ui;
+package fr.forexperts.chessknight.ui;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -26,11 +26,11 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import fr.forexperts.cavalier.R;
-import fr.forexperts.cavalier.util.PrefUtils;
+import fr.forexperts.chessknight.R;
+import fr.forexperts.chessknight.util.PrefUtils;
 
-import static fr.forexperts.cavalier.util.LogUtils.LOGD;
-import static fr.forexperts.cavalier.util.LogUtils.makeLogTag;
+import static fr.forexperts.chessknight.util.LogUtils.LOGD;
+import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 

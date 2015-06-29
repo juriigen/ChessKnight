@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.forexperts.cavalier.ui;
+package fr.forexperts.chessknight.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -28,9 +28,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Random;
 
-import fr.forexperts.cavalier.util.PrefUtils;
+import fr.forexperts.chessknight.util.PrefUtils;
 
-import static fr.forexperts.cavalier.util.LogUtils.makeLogTag;
+import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class ChessboardView extends View {
 

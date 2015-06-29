@@ -1,4 +1,4 @@
-package fr.forexperts.cavalier;
+package fr.forexperts.chessknight;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

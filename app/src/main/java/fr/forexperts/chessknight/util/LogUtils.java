@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package fr.forexperts.cavalier.util;
+package fr.forexperts.chessknight.util;
 
 import android.util.Log;
 
-import fr.forexperts.cavalier.BuildConfig;
+import fr.forexperts.chessknight.BuildConfig;
 
 public class LogUtils {
 

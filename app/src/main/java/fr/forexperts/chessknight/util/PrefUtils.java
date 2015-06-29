@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.forexperts.cavalier.util;
+package fr.forexperts.chessknight.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +22,7 @@ import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
-import static fr.forexperts.cavalier.util.LogUtils.makeLogTag;
+import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class PrefUtils {
 

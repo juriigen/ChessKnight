@@ -127,7 +127,7 @@
 
     </LinearLayout>
 
-    <fr.forexperts.cavalier.ui.ChessboardView
+    <fr.forexperts.chessknight.ui.ChessboardView
         android:background="#ccc"
         android:id="@+id/chessboard"
         android:layout_width="match_parent"
