@@ -26,24 +26,25 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+import butterknife.OnClick;
 import fr.forexperts.chessknight.R;
 import fr.forexperts.chessknight.util.PrefUtils;
 
-import static fr.forexperts.chessknight.util.LogUtils.LOGD;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity {
 
     private static final String TAG = makeLogTag(MainActivity.class);
 
-    private static Button mNewGameButton;
-    private static TextView mScoreTextView;
-    private static TextView mCurrentScoreValueTextView;
-    private static TextView mBestScoreTextView;
-    private static TextView mBestScoreValueTextView;
-    private static TextView mDescriptionTextView;
-
-    private static ChessboardView mChessboard;
+    @Bind(R.id.score) TextView mScoreTextView;
+    @Bind(R.id.score_value) TextView mCurrentScoreValueTextView;
+    @Bind(R.id.best_score) TextView mBestScoreTextView;
+    @Bind(R.id.best_score_value) TextView mBestScoreValueTextView;
+    @Bind(R.id.game_description) TextView mDescriptionTextView;
+    @Bind(R.id.chessboard) ChessboardView mChessboard;
 
     private static int mBestScoreValue = 1;
     private static int mCurrentScoreValue = 1;
@@ -52,29 +53,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
+        // Set up Ad banner
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-
-        mNewGameButton = (Button) findViewById(R.id.new_game_button);
-        mChessboard = (ChessboardView) findViewById(R.id.chessboard);
-        mScoreTextView = (TextView) findViewById(R.id.score);
-        mCurrentScoreValueTextView = (TextView) findViewById(R.id.score_value);
-        mBestScoreTextView = (TextView) findViewById(R.id.best_score);
-        mBestScoreValueTextView = (TextView) findViewById(R.id.best_score_value);
-        mDescriptionTextView = (TextView) findViewById(R.id.game_description);
-
+        // Set up scores
         mBestScoreValue = PrefUtils.getBestScore(this);
-        mCurrentScoreValue = PrefUtils.getCurrentScore(this);
-
-        mNewGameButton.setOnClickListener(this);
-
         mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
+        mCurrentScoreValue = PrefUtils.getCurrentScore(this);
         mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
+        // Set up font
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         mScoreTextView.setTypeface(typeface);
         mCurrentScoreValueTextView.setTypeface(typeface);
         mBestScoreTextView.setTypeface(typeface);
@@ -82,24 +75,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mDescriptionTextView.setTypeface(typeface);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.new_game_button:
-                // Clear the current score
-                mCurrentScoreValue = 1;
-                mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
+    @OnClick(R.id.new_game_button)
+    public void newGame(View v) {
+        // Clear the current score
+        mCurrentScoreValue = 1;
+        mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
-                // Clear the preferences
-                PrefUtils.clearCurrentScore(this);
-                PrefUtils.clearPosition(this);
+        // Clear the preferences
+        PrefUtils.clearCurrentScore(this);
+        PrefUtils.clearPosition(this);
 
-                // Clear the chessboard
-                mChessboard.newGame();
-                break;
-            default:
-                LOGD(TAG, "onClick: view id unknown: " + v.getId());
-        }
+        // Clear the chessboard
+        mChessboard.newGame();
     }
 
     public void updateScore() {
