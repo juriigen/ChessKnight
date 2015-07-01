@@ -21,8 +21,9 @@
     <string name="score">Score</string>
     <string name="best">Best</string>
     <string name="default_score">1</string>
-    <string name="instructions">Move the knight\nin all square!</string>
+    <string name="instructions">Visit all squares exactly once with the knight</string>
     <string name="new_game">New Game</string>
+    <string name="undo">Undo</string>
     <string name="banner_ad_unit_id">ca-app-pub-7370519346258326/5670843299</string>
 
     <!-- Game Over Dialog -->

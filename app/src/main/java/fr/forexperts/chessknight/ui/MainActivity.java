@@ -37,7 +37,6 @@ import butterknife.OnClick;
 import fr.forexperts.chessknight.R;
 import fr.forexperts.chessknight.util.PrefUtils;
 
-import static fr.forexperts.chessknight.util.LogUtils.LOGD;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class MainActivity extends Activity {
@@ -102,8 +101,6 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.new_game_button)
     public void newGame() {
-        LOGD(TAG, "Ad isLoaded: " + mInterstitialAd.isLoaded());
-        LOGD(TAG, "Game counter: " + mGameNumberCounter);
         if (mInterstitialAd.isLoaded() && mGameNumberCounter % 3 == 0) {
             mInterstitialAd.show();
         } else {
@@ -121,6 +118,11 @@ public class MainActivity extends Activity {
             // Increment game number counter
             mGameNumberCounter++;
         }
+    }
+
+    @OnClick(R.id.undo_button)
+    public void undo() {
+        mChessboard.undoLastMove();
     }
 
     public void updateScore() {

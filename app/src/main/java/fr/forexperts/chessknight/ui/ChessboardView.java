@@ -30,7 +30,6 @@ import java.util.Random;
 
 import fr.forexperts.chessknight.util.PrefUtils;
 
-import static fr.forexperts.chessknight.util.LogUtils.LOGD;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class ChessboardView extends View {
@@ -137,7 +136,6 @@ public class ChessboardView extends View {
         }
 
         if (isGameFinished(selectedSquare)) {
-            LOGD(TAG, "Game is finished");
             ((MainActivity) getContext()).endGame();
         }
     }
@@ -145,7 +143,7 @@ public class ChessboardView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        setSelection(eventToSquare(event));
+        setSelection(eventToSquare(event), false);
         return true;
     }
 
@@ -153,7 +151,7 @@ public class ChessboardView extends View {
      * Set/clear the selected square.
      * @param square The square to select, or -1 to clear selection.
      */
-    final public void setSelection(int square) {
+    final public void setSelection(int square, boolean undo) {
         if (square != selectedSquare) {
             if (validMove(getX(selectedSquare), getY(selectedSquare),
                     getX(square), getY(square))) {
@@ -161,7 +159,9 @@ public class ChessboardView extends View {
                 ((MainActivity) getContext()).updateScore();
 
                 // Refresh position
-                position.add(selectedSquare);
+                if (!undo) {
+                    position.add(selectedSquare);
+                }
                 PrefUtils.savePosition(getContext(), position);
 
                 // Refresh knight position
@@ -284,5 +284,15 @@ public class ChessboardView extends View {
         x0 = y0 = sqSize = 0;
         position = new ArrayList<>();
         invalidate();
+    }
+
+    public boolean undoLastMove() {
+        if (position.size() > 1) {
+            int lastMove = position.get(position.size() - 1);
+            position.remove(position.indexOf(lastMove));
+            setSelection(lastMove, true);
+            return true;
+        }
+        return false;
     }
 }
