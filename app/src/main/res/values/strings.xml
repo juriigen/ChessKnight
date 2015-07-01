@@ -14,7 +14,7 @@
 -->
 
 <resources>
-    <string name="app_name">ChessKnight</string>
+    <string name="app_name">Chess Knight</string>
 
     <!-- Main Activity -->
     <string name="action_settings">Settings</string>
@@ -25,4 +25,6 @@
     <string name="new_game">New Game</string>
     <string name="banner_ad_unit_id">ca-app-pub-7370519346258326/5670843299</string>
 
+    <!-- Game Over Dialog -->
+    <string name="game_over">Game Over</string>
 </resources>

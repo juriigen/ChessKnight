@@ -30,6 +30,7 @@ import java.util.Random;
 
 import fr.forexperts.chessknight.util.PrefUtils;
 
+import static fr.forexperts.chessknight.util.LogUtils.LOGD;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class ChessboardView extends View {
@@ -134,6 +135,11 @@ public class ChessboardView extends View {
             int y0 = getYCrd(selY);
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, redOutline);
         }
+
+        if (isGameFinished(selectedSquare)) {
+            LOGD(TAG, "Game is finished");
+            ((MainActivity) getContext()).endGame();
+        }
     }
 
 
@@ -231,6 +237,17 @@ public class ChessboardView extends View {
         return (((Math.abs(xfrom - xto) == 1 && Math.abs(yfrom - yto) == 2) ||
                 (Math.abs(yfrom - yto) == 1 && Math.abs(xfrom - xto) == 2)) &&
                 !position.contains(getSquare(xto, yto)));
+    }
+
+    private boolean isGameFinished(int square) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (validMove(getX(square), getY(selectedSquare), i, j)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private int getXCrd(int x) {

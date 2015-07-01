@@ -17,8 +17,12 @@
 package fr.forexperts.chessknight.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -130,5 +134,30 @@ public class MainActivity extends Activity {
             PrefUtils.setBestScore(this, mBestScoreValue);
             mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
         }
+    }
+
+    public void endGame() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_game_over);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        TextView gameOverLabel = (TextView) dialog.findViewById(R.id.game_over);
+        gameOverLabel.setTypeface(typeface);
+
+        TextView scoreValue = (TextView) dialog.findViewById(R.id.score_value);
+        scoreValue.setText(Integer.toString(mCurrentScoreValue));
+        scoreValue.setTypeface(typeface);
+
+        Button newGameButton = (Button) dialog.findViewById(R.id.new_game_button);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newGame();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }
