@@ -19,24 +19,24 @@ package fr.forexperts.chessknight.ui;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 import butterknife.OnClick;
+
 import fr.forexperts.chessknight.R;
 import fr.forexperts.chessknight.util.PrefUtils;
 
+import static fr.forexperts.chessknight.util.LogUtils.LOGD;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class MainActivity extends Activity {
-
     private static final String TAG = makeLogTag(MainActivity.class);
 
     @Bind(R.id.score) TextView mScoreTextView;
@@ -48,6 +48,9 @@ public class MainActivity extends Activity {
 
     private static int mBestScoreValue = 1;
     private static int mCurrentScoreValue = 1;
+    private static int mGameNumberCounter = 1;
+
+    private static InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,19 @@ public class MainActivity extends Activity {
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        // Set up Interstitial
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-7370519346258326/7481993699");
+        requestNewInterstitial();
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                newGame();
+            }
+        });
 
         // Set up scores
         mBestScoreValue = PrefUtils.getBestScore(this);
@@ -75,18 +91,32 @@ public class MainActivity extends Activity {
         mDescriptionTextView.setTypeface(typeface);
     }
 
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
     @OnClick(R.id.new_game_button)
-    public void newGame(View v) {
-        // Clear the current score
-        mCurrentScoreValue = 1;
-        mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
+    public void newGame() {
+        LOGD(TAG, "Ad isLoaded: " + mInterstitialAd.isLoaded());
+        LOGD(TAG, "Game counter: " + mGameNumberCounter);
+        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 3 == 0) {
+            mInterstitialAd.show();
+        } else {
+            // Clear the current score
+            mCurrentScoreValue = 1;
+            mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
-        // Clear the preferences
-        PrefUtils.clearCurrentScore(this);
-        PrefUtils.clearPosition(this);
+            // Clear the preferences
+            PrefUtils.clearCurrentScore(this);
+            PrefUtils.clearPosition(this);
 
-        // Clear the chessboard
-        mChessboard.newGame();
+            // Clear the chessboard
+            mChessboard.newGame();
+
+            // Increment game number counter
+            mGameNumberCounter++;
+        }
     }
 
     public void updateScore() {

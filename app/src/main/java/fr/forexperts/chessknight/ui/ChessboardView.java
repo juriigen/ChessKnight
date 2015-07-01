@@ -33,7 +33,6 @@ import fr.forexperts.chessknight.util.PrefUtils;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class ChessboardView extends View {
-
     private static final String TAG = makeLogTag(ChessboardView.class);
 
     private int x0, y0, sqSize;
