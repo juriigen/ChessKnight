@@ -26,7 +26,6 @@ import java.util.HashMap;
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class PrefUtils {
-
     private static final String TAG = makeLogTag(PrefUtils.class);
 
     /**
