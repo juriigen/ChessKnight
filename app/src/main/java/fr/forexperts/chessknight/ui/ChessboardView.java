@@ -37,6 +37,7 @@ public class ChessboardView extends View {
 
     private int x0, y0, sqSize;
     private int selectedSquare;
+    private static int columnsNumber = 3;
     private ArrayList<Integer> position;
 
     private Paint darkPaint;
@@ -51,12 +52,15 @@ public class ChessboardView extends View {
 
         x0 = y0 = sqSize = 0;
 
+        // Load last chessboard size
+        columnsNumber = PrefUtils.getColumnsNumber(getContext());
+
         // If the last game was not finished, get the last knight position;
         int lastKnightPosition = PrefUtils.getPositionKnight(getContext());
         if (lastKnightPosition != -1) {
             selectedSquare = lastKnightPosition;
         } else {
-            selectedSquare = randInt(0, 63);
+            selectedSquare = randInt(0, columnsNumber * columnsNumber - 1);
         }
 
         // If the last game was not finished, get the last position of the last game.
@@ -100,12 +104,12 @@ public class ChessboardView extends View {
     protected void onDraw(Canvas canvas) {
         final int width = getWidth();
         final int height = getHeight();
-        sqSize = (Math.min(width, height) - 4) / 8;
-        x0 = (width - sqSize * 8) / 2;
-        y0 = (height - sqSize * 8) / 2;
+        sqSize = (Math.min(width, height) - (columnsNumber >> 1)) / columnsNumber;
+        x0 = (width - sqSize * columnsNumber) / 2;
+        y0 = (height - sqSize * columnsNumber) / 2;
 
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < columnsNumber; x++) {
+            for (int y = 0; y < columnsNumber; y++) {
                 // Draw the square
                 final int xCrd = getXCrd(x);
                 final int yCrd = getYCrd(y);
@@ -129,7 +133,7 @@ public class ChessboardView extends View {
         if (selectedSquare >= 0) {
             int selX = getX(selectedSquare);
             int selY = getY(selectedSquare);
-            redOutline.setStrokeWidth(sqSize / (float) 16);
+            redOutline.setStrokeWidth(sqSize / (float) (columnsNumber * 2));
             int x0 = getXCrd(selX);
             int y0 = getYCrd(selY);
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, redOutline);
@@ -188,8 +192,8 @@ public class ChessboardView extends View {
         int sq = -1;
         if ((xCrd >= x0) && (yCrd >= y0) && (sqSize > 0)) {
             int x = (xCrd - x0) / sqSize;
-            int y = 7 - (yCrd - y0) / sqSize;
-            if ((x >= 0) && (x < 8) && (y >= 0) && (y < 8)) {
+            int y = columnsNumber - 1 - (yCrd - y0) / sqSize;
+            if ((x >= 0) && (x < columnsNumber) && (y >= 0) && (y < columnsNumber)) {
                 sq = getSquare(x, y);
             }
         }
@@ -200,21 +204,21 @@ public class ChessboardView extends View {
      * Return index in squares[] vector corresponding to (x,y).
      */
     public static int getSquare(int x, int y) {
-        return y * 8 + x;
+        return y * columnsNumber + x;
     }
 
     /**
      * Return x position (file) corresponding to a square.
      */
     public static int getX(int square) {
-        return square & 7;
+        return square % columnsNumber;
     }
 
     /**
      * Return y position (rank) corresponding to a square.
      */
     public static int getY(int square) {
-        return square >> 3;
+        return square / columnsNumber;
     }
 
     private void drawPiece(Canvas canvas, int xCrd, int yCrd) {
@@ -240,8 +244,8 @@ public class ChessboardView extends View {
     }
 
     private boolean isGameFinished(int square) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < columnsNumber; i++) {
+            for (int j = 0; j < columnsNumber; j++) {
                 if (validMove(getX(square), getY(selectedSquare), i, j)) {
                     return false;
                 }
@@ -254,7 +258,7 @@ public class ChessboardView extends View {
         return x0 + sqSize * x;
     }
     private int getYCrd(int y) {
-        return y0 + sqSize * (7 - y);
+        return y0 + sqSize * (columnsNumber - 1 - y);
     }
 
     /**
@@ -280,7 +284,8 @@ public class ChessboardView extends View {
     }
 
     public void newGame() {
-        selectedSquare = randInt(0, 63);
+        columnsNumber = PrefUtils.getColumnsNumber(getContext());
+        selectedSquare = randInt(0, columnsNumber * columnsNumber - 1);
         x0 = y0 = sqSize = 0;
         position = new ArrayList<>();
         invalidate();

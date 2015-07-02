@@ -21,17 +21,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static fr.forexperts.chessknight.util.LogUtils.makeLogTag;
 
 public class PrefUtils {
 
     private static final String TAG = makeLogTag(PrefUtils.class);
-
-    /**
-     * Integer preference indicates the best score.
-     */
-    public static final String PREF_BEST_SCORE = "pref_best_score";
 
     /**
      * Integer preference indicates the score of the current game.
@@ -43,10 +39,10 @@ public class PrefUtils {
      */
     public static final String PREF_POSITION_KNIGHT = "pref_position_knight";
 
-    public static void setBestScore(final Context context, final int score) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_BEST_SCORE, score).apply();
-    }
+    /**
+     * Integer preference indicates the position of the knight.
+     */
+    public static final String PREF_COLUMNS_NUMBER = "pref_columns_number";
 
     public static void setCurrentScore(final Context context, final int score) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -56,6 +52,11 @@ public class PrefUtils {
     public static void setKnightPosition(final Context context, final int positionKnight) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putInt(PREF_POSITION_KNIGHT, positionKnight).apply();
+    }
+
+    public static void setColumnsNumber(final Context context, final int columnsNumber) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt(PREF_COLUMNS_NUMBER, columnsNumber).apply();
     }
 
     public static void savePosition(final Context context, final ArrayList<Integer> position) {
@@ -70,9 +71,31 @@ public class PrefUtils {
         mEdit.apply();
     }
 
-    public static int getBestScore(final Context context) {
+    public static void saveBestScore(final Context context,
+                                     final HashMap<Integer, Integer> bestScore) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_BEST_SCORE, 1);
+        SharedPreferences.Editor mEdit = sp.edit();
+
+        for (int i = 4; i <= 16; i++) {
+            if (bestScore.containsKey(i)) {
+                mEdit.putInt("bestscore_" + i, bestScore.get(i));
+            } else {
+                mEdit.putInt("bestscore_" + i, 1);
+            }
+        }
+
+        mEdit.apply();
+    }
+
+    public static HashMap<Integer, Integer> getBestScore(final Context context) {
+        HashMap<Integer, Integer> bestScore = new HashMap<>();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        for (int i = 4; i <= 16; i++) {
+            bestScore.put(i, sp.getInt("bestscore_" + i, 1));
+        }
+
+        return bestScore;
     }
 
     public static int getCurrentScore(final Context context) {
@@ -83,6 +106,11 @@ public class PrefUtils {
     public static int getPositionKnight(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(PREF_POSITION_KNIGHT, -1);
+    }
+
+    public static int getColumnsNumber(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getInt(PREF_COLUMNS_NUMBER, 6);
     }
 
     public static ArrayList<Integer> getPosition(final Context context) {

@@ -22,7 +22,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -33,6 +35,8 @@ import com.google.android.gms.ads.InterstitialAd;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import java.util.HashMap;
 
 import fr.forexperts.chessknight.R;
 import fr.forexperts.chessknight.util.PrefUtils;
@@ -49,6 +53,7 @@ public class MainActivity extends Activity {
     @Bind(R.id.game_description) TextView mDescriptionTextView;
     @Bind(R.id.chessboard) ChessboardView mChessboard;
 
+    private static HashMap<Integer, Integer> mBestScore;
     private static int mBestScoreValue = 1;
     private static int mCurrentScoreValue = 1;
     private static int mGameNumberCounter = 1;
@@ -80,7 +85,8 @@ public class MainActivity extends Activity {
         });
 
         // Set up scores
-        mBestScoreValue = PrefUtils.getBestScore(this);
+        mBestScore = PrefUtils.getBestScore(this);
+        mBestScoreValue = mBestScore.get(PrefUtils.getColumnsNumber(this));
         mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
         mCurrentScoreValue = PrefUtils.getCurrentScore(this);
         mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
@@ -108,6 +114,10 @@ public class MainActivity extends Activity {
             mCurrentScoreValue = 1;
             mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
+            // Load the corresponding best score
+            mBestScoreValue = mBestScore.get(PrefUtils.getColumnsNumber(this));
+            mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
+
             // Clear the preferences
             PrefUtils.clearCurrentScore(this);
             PrefUtils.clearPosition(this);
@@ -125,6 +135,57 @@ public class MainActivity extends Activity {
         mChessboard.undoLastMove();
     }
 
+    @OnClick(R.id.change_size_button)
+    public void changeChessBoardSize() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_change_size);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        final TextView chessboardSize = (TextView) dialog.findViewById(R.id.chessboard_size);
+        chessboardSize.setTypeface(typeface);
+        int columnsNumber = PrefUtils.getColumnsNumber(this);
+        chessboardSize.setText(columnsNumber + "x" + columnsNumber);
+
+        SeekBar chessboardSizeControl = (SeekBar) dialog.findViewById(R.id.chessboard_size_control);
+        chessboardSizeControl.setProgress(columnsNumber - 4);
+        chessboardSizeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = progress + 4;
+                chessboardSize.setText(progress + "x" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                PrefUtils.setColumnsNumber(MainActivity.this, seekBar.getProgress() + 4);
+            }
+        });
+
+        Button newGameButton = (Button) dialog.findViewById(R.id.new_game_button);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newGame();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        lp.copyFrom(window.getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
+    }
+
     public void updateScore(boolean undo) {
         if (!undo) {
             mCurrentScoreValue++;
@@ -137,7 +198,8 @@ public class MainActivity extends Activity {
         // Check if the current score is the best score
         if (mCurrentScoreValue > mBestScoreValue) {
             mBestScoreValue = mCurrentScoreValue;
-            PrefUtils.setBestScore(this, mBestScoreValue);
+            mBestScore.put(PrefUtils.getColumnsNumber(this), mBestScoreValue);
+            PrefUtils.saveBestScore(this, mBestScore);
             mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
         }
     }
@@ -150,7 +212,8 @@ public class MainActivity extends Activity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         TextView gameOverLabel = (TextView) dialog.findViewById(R.id.game_over);
         gameOverLabel.setTypeface(typeface);
-        if (mCurrentScoreValue == 64) {
+        int columnsNumber = PrefUtils.getColumnsNumber(this);
+        if (mCurrentScoreValue == columnsNumber * columnsNumber) {
             gameOverLabel.setText(getString(R.string.win));
         }
 
@@ -168,5 +231,12 @@ public class MainActivity extends Activity {
         });
 
         dialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        lp.copyFrom(window.getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
     }
 }
