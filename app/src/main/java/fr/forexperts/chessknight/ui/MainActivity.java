@@ -146,6 +146,9 @@ public class MainActivity extends Activity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         TextView gameOverLabel = (TextView) dialog.findViewById(R.id.game_over);
         gameOverLabel.setTypeface(typeface);
+        if (mCurrentScoreValue == 64) {
+            gameOverLabel.setText(getString(R.string.win));
+        }
 
         TextView scoreValue = (TextView) dialog.findViewById(R.id.score_value);
         scoreValue.setText(Integer.toString(mCurrentScoreValue));
