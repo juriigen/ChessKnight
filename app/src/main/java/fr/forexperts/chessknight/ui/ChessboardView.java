@@ -156,7 +156,7 @@ public class ChessboardView extends View {
             if (validMove(getX(selectedSquare), getY(selectedSquare),
                     getX(square), getY(square))) {
                 // Update the score
-                ((MainActivity) getContext()).updateScore();
+                ((MainActivity) getContext()).updateScore(undo);
 
                 // Refresh position
                 if (!undo) {

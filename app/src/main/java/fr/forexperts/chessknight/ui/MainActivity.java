@@ -125,8 +125,12 @@ public class MainActivity extends Activity {
         mChessboard.undoLastMove();
     }
 
-    public void updateScore() {
-        mCurrentScoreValue++;
+    public void updateScore(boolean undo) {
+        if (!undo) {
+            mCurrentScoreValue++;
+        } else {
+            mCurrentScoreValue--;
+        }
         PrefUtils.setCurrentScore(this, mCurrentScoreValue);
         mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
