@@ -25,7 +25,7 @@
     <string name="new_game">New Game</string>
     <string name="undo">Undo</string>
     <string name="change_size">Change Size</string>
-    <string name="achievements">Achievements</string>
+    <string name="leaderboard">Leaderboard</string>
     <string name="banner_ad_unit_id">ca-app-pub-7370519346258326/5670843299</string>
 
     <!-- Game Over Dialog -->

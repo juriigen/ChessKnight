@@ -75,9 +75,10 @@ public class MainActivity extends Activity implements
     private boolean mAutoStartSignInFlow = true;
     private boolean mSignInClicked = false;
 
-    private static int REQUEST_ACHIEVEMENTS = 1;
+    private static int REQUEST_LEADERBOARD = 1;
 
     private static HashMap<Integer, String> mAchievementID;
+    private static HashMap<Integer, String> mLeaderboardID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,9 @@ public class MainActivity extends Activity implements
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
 
+        // Fill Google Play Services data array
         fillAchievementIDArray();
+        fillLeaderboardIDArray();
 
         // Set up Ad banner
         AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -222,11 +225,11 @@ public class MainActivity extends Activity implements
         mChessboard.undoLastMove();
     }
 
-    @OnClick(R.id.achievement_button)
-    public void getAchievementUI() {
+    @OnClick(R.id.leaderboard_button)
+    public void getLeaderboard() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient),
-                    REQUEST_ACHIEVEMENTS);
+            startActivityForResult(Games.Leaderboards.getAllLeaderboardsIntent(mGoogleApiClient),
+                    REQUEST_LEADERBOARD);
         } else {
             showSignInDialog();
         }
@@ -369,14 +372,20 @@ public class MainActivity extends Activity implements
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
 
-        // Check is game played number achievements are completed
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            // Check if an achievement "Play X games in a row" is completed
             if (mGameNumberCounter == 10) {
                 Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(1));
             } else if (mGameNumberCounter == 20) {
                 Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(2));
             } else if (mGameNumberCounter == 50) {
                 Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(3));
+            }
+
+            // Check if the best score had been beat
+            if (mCurrentScoreValue == mBestScoreValue) {
+                Games.Leaderboards.submitScore(mGoogleApiClient, mLeaderboardID.get(columnsNumber),
+                        mBestScoreValue);
             }
         }
     }
@@ -399,5 +408,22 @@ public class MainActivity extends Activity implements
         mAchievementID.put(14, "CgkIytW_os0bEAIQEw");
         mAchievementID.put(15, "CgkIytW_os0bEAIQFA");
         mAchievementID.put(16, "CgkIytW_os0bEAIQFQ");
+    }
+
+    private void fillLeaderboardIDArray() {
+        mLeaderboardID = new HashMap<>();
+        mLeaderboardID.put(4, "CgkIytW_os0bEAIQFw");
+        mLeaderboardID.put(5, "CgkIytW_os0bEAIQGA");
+        mLeaderboardID.put(6, "CgkIytW_os0bEAIQGQ");
+        mLeaderboardID.put(7, "CgkIytW_os0bEAIQGg");
+        mLeaderboardID.put(8, "CgkIytW_os0bEAIQGw");
+        mLeaderboardID.put(9, "CgkIytW_os0bEAIQHA");
+        mLeaderboardID.put(10, "CgkIytW_os0bEAIQHQ");
+        mLeaderboardID.put(11, "CgkIytW_os0bEAIQHg");
+        mLeaderboardID.put(12, "CgkIytW_os0bEAIQHw");
+        mLeaderboardID.put(13, "CgkIytW_os0bEAIQIA");
+        mLeaderboardID.put(14, "CgkIytW_os0bEAIQIQ");
+        mLeaderboardID.put(15, "CgkIytW_os0bEAIQIg");
+        mLeaderboardID.put(16, "CgkIytW_os0bEAIQIw");
     }
 }

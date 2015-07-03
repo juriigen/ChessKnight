@@ -125,7 +125,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginBottom="-10dp"
                 android:text="@string/new_game"
                 android:textColor="@color/text_color" />
 
@@ -142,7 +141,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="end"
-                android:layout_marginBottom="-10dp"
                 android:text="@string/undo"
                 android:textColor="@color/text_color" />
 
@@ -163,12 +161,11 @@
             <Button
                 android:background="@android:color/transparent"
                 android:gravity="start|center"
-                android:id="@+id/achievement_button"
+                android:id="@+id/leaderboard_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginTop="-10dp"
-                android:text="@string/achievements"
+                android:text="@string/leaderboard"
                 android:textColor="@color/text_color" />
 
             <Space
@@ -183,7 +180,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginTop="-10dp"
                 android:text="@string/change_size"
                 android:textColor="@color/text_color" />
 
