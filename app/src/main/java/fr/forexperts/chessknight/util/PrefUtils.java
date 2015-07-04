@@ -109,7 +109,7 @@ public class PrefUtils {
 
     public static int getColumnsNumber(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_COLUMNS_NUMBER, 6);
+        return sp.getInt(PREF_COLUMNS_NUMBER, 8);
     }
 
     public static ArrayList<Integer> getPosition(final Context context) {
