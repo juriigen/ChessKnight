@@ -39,6 +39,7 @@ public class ChessboardView extends View {
     private int selectedSquare;
     private static int columnsNumber = 3;
     private ArrayList<Integer> position;
+    private ArrayList<Integer> forbiddenSquare;
 
     private Paint darkPaint;
     private Paint brightPaint;
@@ -69,6 +70,14 @@ public class ChessboardView extends View {
             position = lastPosition;
         } else {
             position = new ArrayList<>();
+        }
+
+        // If the last game was not finished, get the forbidden square of the last game.
+        ArrayList<Integer> lastForbiddenSquare = PrefUtils.getForbiddenSquare(getContext());
+        if (lastForbiddenSquare.size() != 0) {
+            forbiddenSquare = lastForbiddenSquare;
+        } else {
+            forbiddenSquare = new ArrayList<>();
         }
 
         darkPaint = new Paint();
@@ -118,13 +127,18 @@ public class ChessboardView extends View {
 
                 // Draw a red square if the knight had been already in this square
                 int sq = getSquare(x, y);
-                if (position.contains(sq)) {
-                    canvas.drawRect(xCrd, yCrd, xCrd + sqSize, yCrd + sqSize, redPaint);
-                }
 
-                // Draw the piece into the selected square
-                if (sq == selectedSquare) {
-                    drawPiece(canvas, xCrd + sqSize / 2, yCrd + sqSize / 2);
+                if (forbiddenSquare.contains(sq)) {
+                    drawForbiddenSquare(canvas, xCrd + sqSize / 2, yCrd + sqSize / 2);
+                } else {
+                    if (position.contains(sq)) {
+                        canvas.drawRect(xCrd, yCrd, xCrd + sqSize, yCrd + sqSize, redPaint);
+                    }
+
+                    // Draw the piece into the selected square
+                    if (sq == selectedSquare) {
+                        drawPiece(canvas, xCrd + sqSize / 2, yCrd + sqSize / 2);
+                    }
                 }
             }
         }
@@ -237,10 +251,27 @@ public class ChessboardView extends View {
         }
     }
 
+    private void drawForbiddenSquare(Canvas canvas, int xCrd, int yCrd) {
+        String ps = "x"; // Cross
+        if (ps.length() > 0) {
+            Paint paint = whitePiecePaint;
+            paint.setTextSize(sqSize);
+            Typeface casefont = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/casefont.ttf");
+            paint.setTypeface(casefont);
+            Rect bounds = new Rect();
+            paint.getTextBounds(ps, 0, ps.length(), bounds);
+            int xCent = bounds.centerX();
+            int yCent = bounds.centerY();
+            canvas.drawText(ps, xCrd - xCent, yCrd - yCent, paint);
+        }
+    }
+
     private boolean validMove(int xfrom, int yfrom, int xto, int yto) {
         return (((Math.abs(xfrom - xto) == 1 && Math.abs(yfrom - yto) == 2) ||
                 (Math.abs(yfrom - yto) == 1 && Math.abs(xfrom - xto) == 2)) &&
-                !position.contains(getSquare(xto, yto)));
+                !position.contains(getSquare(xto, yto)) &&
+                !forbiddenSquare.contains(getSquare(xto, yto)));
     }
 
     private boolean isGameFinished(int square) {
@@ -288,6 +319,25 @@ public class ChessboardView extends View {
         selectedSquare = randInt(0, columnsNumber * columnsNumber - 1);
         x0 = y0 = sqSize = 0;
         position = new ArrayList<>();
+        forbiddenSquare = new ArrayList<>();
+        invalidate();
+    }
+
+    public void startNewRound() {
+        x0 = y0 = sqSize = 0;
+        position = new ArrayList<>();
+
+        // TODO: To optimize can be long at the end
+        if (forbiddenSquare.size() < columnsNumber * columnsNumber - 1) {
+            int newForbiddenSquare = randInt(0, columnsNumber * columnsNumber - 1);
+            while (newForbiddenSquare == selectedSquare
+                    || forbiddenSquare.contains(newForbiddenSquare)) {
+                newForbiddenSquare = randInt(0, columnsNumber * columnsNumber - 1);
+            }
+            forbiddenSquare.add(newForbiddenSquare);
+        }
+        PrefUtils.saveForbiddenSquare(getContext(), forbiddenSquare);
+
         invalidate();
     }
 

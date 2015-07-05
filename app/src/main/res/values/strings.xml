@@ -30,7 +30,10 @@
 
     <!-- Game Over Dialog -->
     <string name="game_over">Game over!</string>
+
+    <!-- Win Dialog -->
     <string name="win">You win!</string>
+    <string name="continue_game">Continue</string>
 
     <!-- Sign In Dialog -->
     <string name="not_signed">Please Sign Into Google Play Games Services</string>

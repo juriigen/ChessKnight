@@ -70,6 +70,18 @@ public class PrefUtils {
         mEdit.apply();
     }
 
+    public static void saveForbiddenSquare(final Context context, final ArrayList<Integer> forbiddenSquare) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor mEdit = sp.edit();
+
+        mEdit.putInt("forbidden_square_size", forbiddenSquare.size());
+        for (int i = 0; i < forbiddenSquare.size(); i++) {
+            mEdit.putInt("forbidden_square_" + i, forbiddenSquare.get(i));
+        }
+
+        mEdit.apply();
+    }
+
     public static void saveBestScore(final Context context,
                                      final HashMap<Integer, Integer> bestScore) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -122,6 +134,28 @@ public class PrefUtils {
         }
 
         return position;
+    }
+
+    public static ArrayList<Integer> getForbiddenSquare(final Context context) {
+        ArrayList<Integer> forbiddenSquare = new ArrayList<>();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        int size = sp.getInt("forbidden_square_size", 0);
+
+        for (int i = 0; i < size; i++) {
+            forbiddenSquare.add(sp.getInt("forbidden_square_" + i, -1));
+        }
+
+        return forbiddenSquare;
+    }
+
+    public static void clearForbiddenSquare(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        int size = sp.getInt("forbidden_square_size", 0);
+
+        for (int i = 0; i < size; i++) {
+            sp.edit().remove("forbidden_square_" + i).apply();
+        }
+        sp.edit().remove("forbidden_square_size").apply();
     }
 
     public static void clearPosition(final Context context) {

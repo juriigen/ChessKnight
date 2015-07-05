@@ -209,6 +209,7 @@ public class MainActivity extends Activity implements
             mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
 
             // Clear the preferences
+            PrefUtils.clearForbiddenSquare(this);
             PrefUtils.clearCurrentScore(this);
             PrefUtils.clearPosition(this);
 
@@ -218,6 +219,13 @@ public class MainActivity extends Activity implements
             // Increment game number counter
             mGameNumberCounter++;
         }
+    }
+
+    public void newRound() {
+        PrefUtils.clearPosition(this);
+
+        // Clear the chessboard
+        mChessboard.startNewRound();
     }
 
     @OnClick(R.id.undo_button)
@@ -333,6 +341,15 @@ public class MainActivity extends Activity implements
     }
 
     public void endGame() {
+        int columnsNumber = PrefUtils.getColumnsNumber(this);
+        if (mCurrentScoreValue == columnsNumber * columnsNumber) {
+            showWinDialog();
+        } else {
+            showGameOverDialog();
+        }
+    }
+
+    private void showGameOverDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_game_over);
@@ -340,15 +357,6 @@ public class MainActivity extends Activity implements
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         TextView gameOverLabel = (TextView) dialog.findViewById(R.id.game_over);
         gameOverLabel.setTypeface(typeface);
-        int columnsNumber = PrefUtils.getColumnsNumber(this);
-        if (mCurrentScoreValue == columnsNumber * columnsNumber) {
-            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-                // Call a Play Games services API method, for example:
-                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(columnsNumber));
-            }
-
-            gameOverLabel.setText(getString(R.string.win));
-        }
 
         TextView scoreValue = (TextView) dialog.findViewById(R.id.score_value);
         scoreValue.setText(Integer.toString(mCurrentScoreValue));
@@ -384,10 +392,57 @@ public class MainActivity extends Activity implements
 
             // Check if the best score had been beat
             if (mCurrentScoreValue == mBestScoreValue) {
+                int columnsNumber = PrefUtils.getColumnsNumber(this);
                 Games.Leaderboards.submitScore(mGoogleApiClient, mLeaderboardID.get(columnsNumber),
                         mBestScoreValue);
             }
         }
+    }
+
+    private void showWinDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_win);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        TextView winLabel = (TextView) dialog.findViewById(R.id.win);
+        winLabel.setTypeface(typeface);
+
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            int columnsNumber = PrefUtils.getColumnsNumber(this);
+            Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(columnsNumber));
+        }
+
+        TextView scoreValue = (TextView) dialog.findViewById(R.id.score_value);
+        scoreValue.setText(Integer.toString(mCurrentScoreValue));
+        scoreValue.setTypeface(typeface);
+
+        Button newGameButton = (Button) dialog.findViewById(R.id.new_game_button);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newGame();
+                dialog.dismiss();
+            }
+        });
+
+        Button continueButton = (Button) dialog.findViewById(R.id.continue_button);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newRound();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        lp.copyFrom(window.getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
     }
 
     private void fillAchievementIDArray() {
