@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements
     private static int mBestScoreValue = 1;
     private static int mCurrentScoreValue = 1;
     private static int mGameNumberCounter = 1;
+    private static int mVictoryNumber = 0;
 
     private static InterstitialAd mInterstitialAd;
 
@@ -115,6 +116,8 @@ public class MainActivity extends Activity implements
         mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
         mCurrentScoreValue = PrefUtils.getCurrentScore(this);
         mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
+
+        mVictoryNumber = PrefUtils.getVictoryNumber(this);
 
         // Set up font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
@@ -198,6 +201,9 @@ public class MainActivity extends Activity implements
             mCurrentScoreValue = 1;
             mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
+            // Clear victory number
+            mVictoryNumber = 0;
+
             // Load the corresponding best score
             mBestScoreValue = mBestScore.get(PrefUtils.getColumnsNumber(this));
             mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
@@ -206,6 +212,7 @@ public class MainActivity extends Activity implements
             PrefUtils.clearForbiddenSquare(this);
             PrefUtils.clearCurrentScore(this);
             PrefUtils.clearPosition(this);
+            PrefUtils.clearVictoryNumber(this);
 
             // Clear the chessboard
             mChessboard.newGame();
@@ -216,6 +223,10 @@ public class MainActivity extends Activity implements
     }
 
     public void newRound() {
+        // Increment and save victory number
+        mVictoryNumber++;
+        PrefUtils.setVictoryNumber(this, mVictoryNumber);
+
         PrefUtils.clearPosition(this);
 
         // Clear the chessboard
@@ -336,7 +347,8 @@ public class MainActivity extends Activity implements
 
     public void endGame() {
         int columnsNumber = PrefUtils.getColumnsNumber(this);
-        if (mCurrentScoreValue == columnsNumber * columnsNumber) {
+        int scoreFinal = columnsNumber * columnsNumber * (1 + mVictoryNumber) - mVictoryNumber;
+        if (mCurrentScoreValue == scoreFinal) {
             showWinDialog();
         } else {
             showGameOverDialog();

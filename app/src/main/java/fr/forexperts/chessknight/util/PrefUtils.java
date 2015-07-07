@@ -39,9 +39,14 @@ public class PrefUtils {
     public static final String PREF_POSITION_KNIGHT = "pref_position_knight";
 
     /**
-     * Integer preference indicates the position of the knight.
+     * Integer preference indicates the columns number.
      */
     public static final String PREF_COLUMNS_NUMBER = "pref_columns_number";
+
+    /**
+     * Integer preference indicates the number of victory.
+     */
+    public static final String PREF_VICTORY_NUMBER = "pref_victory_number";
 
     public static void setCurrentScore(final Context context, final int score) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -56,6 +61,11 @@ public class PrefUtils {
     public static void setColumnsNumber(final Context context, final int columnsNumber) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putInt(PREF_COLUMNS_NUMBER, columnsNumber).apply();
+    }
+
+    public static void setVictoryNumber(final Context context, final int victoryNumber) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt(PREF_VICTORY_NUMBER, victoryNumber).apply();
     }
 
     public static void savePosition(final Context context, final ArrayList<Integer> position) {
@@ -124,6 +134,11 @@ public class PrefUtils {
         return sp.getInt(PREF_COLUMNS_NUMBER, 8);
     }
 
+    public static int getVictoryNumber(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getInt(PREF_VICTORY_NUMBER, 0);
+    }
+
     public static ArrayList<Integer> getPosition(final Context context) {
         ArrayList<Integer> position = new ArrayList<>();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -171,5 +186,10 @@ public class PrefUtils {
     public static void clearCurrentScore(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().remove(PREF_CURRENT_SCORE).apply();
+    }
+
+    public static void clearVictoryNumber(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().remove(PREF_VICTORY_NUMBER).apply();
     }
 }

@@ -338,6 +338,9 @@ public class ChessboardView extends View {
         }
         PrefUtils.saveForbiddenSquare(getContext(), forbiddenSquare);
 
+        // Update the score
+        ((MainActivity) getContext()).updateScore(false);
+
         invalidate();
     }
 
