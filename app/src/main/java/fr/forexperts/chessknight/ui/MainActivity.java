@@ -260,7 +260,8 @@ public class MainActivity extends Activity implements
         int columnsNumber = PrefUtils.getColumnsNumber(this);
         chessboardSize.setText(columnsNumber + "x" + columnsNumber);
 
-        SeekBar chessboardSizeControl = (SeekBar) dialog.findViewById(R.id.chessboard_size_control);
+        final SeekBar chessboardSizeControl =
+                (SeekBar) dialog.findViewById(R.id.chessboard_size_control);
         chessboardSizeControl.setProgress(columnsNumber - 4);
         chessboardSizeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -271,12 +272,10 @@ public class MainActivity extends Activity implements
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                PrefUtils.setColumnsNumber(MainActivity.this, seekBar.getProgress() + 4);
             }
         });
 
@@ -284,6 +283,8 @@ public class MainActivity extends Activity implements
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PrefUtils.setColumnsNumber(MainActivity.this,
+                        chessboardSizeControl.getProgress() + 4);
                 newGame();
                 dialog.dismiss();
             }
