@@ -357,6 +357,24 @@ public class MainActivity extends Activity implements
     }
 
     private void showGameOverDialog() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            // Check if an achievement "Play X games in a row" is completed
+            if (mGameNumberCounter == 10) {
+                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(1));
+            } else if (mGameNumberCounter == 20) {
+                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(2));
+            } else if (mGameNumberCounter == 50) {
+                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(3));
+            }
+
+            // Check if the best score had been beat
+            if (mCurrentScoreValue == mBestScoreValue) {
+                int columnsNumber = PrefUtils.getColumnsNumber(this);
+                Games.Leaderboards.submitScore(mGoogleApiClient, mLeaderboardID.get(columnsNumber),
+                        mBestScoreValue);
+            }
+        }
+
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_game_over);
@@ -386,24 +404,6 @@ public class MainActivity extends Activity implements
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            // Check if an achievement "Play X games in a row" is completed
-            if (mGameNumberCounter == 10) {
-                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(1));
-            } else if (mGameNumberCounter == 20) {
-                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(2));
-            } else if (mGameNumberCounter == 50) {
-                Games.Achievements.unlock(mGoogleApiClient, mAchievementID.get(3));
-            }
-
-            // Check if the best score had been beat
-            if (mCurrentScoreValue == mBestScoreValue) {
-                int columnsNumber = PrefUtils.getColumnsNumber(this);
-                Games.Leaderboards.submitScore(mGoogleApiClient, mLeaderboardID.get(columnsNumber),
-                        mBestScoreValue);
-            }
-        }
     }
 
     private void showWinDialog() {
