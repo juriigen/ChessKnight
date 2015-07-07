@@ -98,7 +98,7 @@ public class MainActivity extends Activity implements
 
         // Set up Interstitial
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-7370519346258326/7481993699");
+        mInterstitialAd.setAdUnitId("ca-app-pub-7370519346258326/9965638495");
         requestNewInterstitial();
 
         mInterstitialAd.setAdListener(new AdListener() {
@@ -191,7 +191,7 @@ public class MainActivity extends Activity implements
 
     @OnClick(R.id.new_game_button)
     public void newGame() {
-        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 3 == 0) {
+        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 5 == 0) {
             mInterstitialAd.show();
         } else {
             // Clear the current score
