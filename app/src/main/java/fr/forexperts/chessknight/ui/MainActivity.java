@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -96,6 +97,11 @@ public class MainActivity extends Activity implements
         // Fill Google Play Services data array
         fillAchievementIDArray();
         fillLeaderboardIDArray();
+
+        // Set up Ad banner
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Set up Interstitial
         mInterstitialAd = new InterstitialAd(this);
