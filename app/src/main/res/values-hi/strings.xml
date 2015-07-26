@@ -1,0 +1,33 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Chess Knight</string>
+    <string name="action_settings">सेटिंग्स</string>
+    <string name="best">सबसे अच्छा</string>
+    <string name="change_size">परिवर्तन आकार</string>
+    <string name="game_over">खेल खत्म!</string>
+    <string name="instructions">नाइट के साथ वास्तव में एक बार सभी वर्गों को भेंट</string>
+    <string name="leaderboard">लीडरबोर्ड</string>
+    <string name="new_game">नया खेल</string>
+    <string name="not_signed">गूगल प्ले खेल सेवाओं में साइन इन करें</string>
+    <string name="score">स्कोर</string>
+    <string name="sign_in">साइन इन करें</string>
+    <string name="signin_failure">साइन इन करने में अक्षम।</string>
+    <string name="signin_other_error">साइन-इन के साथ एक मुद्दा था, बाद में पुन: प्रयास करें।</string>
+    <string name="undo">पूर्ववत</string>
+    <string name="win">आप जीतते हैं!</string>
+    <string name="continue_game">जारी रखें</string>
+</resources>
