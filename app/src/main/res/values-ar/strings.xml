@@ -16,18 +16,18 @@
 <resources>
     <string name="app_name">Chess Knight</string>
     <string name="action_settings">إعدادات</string>
-    <string name="best">أفضل</string>
     <string name="change_size">تغيير الحجم</string>
     <string name="continue_game">استمر</string>
     <string name="game_over">انتهت اللعبة!</string>
-    <string name="instructions">زيارة جميع الساحات مرة واحدة فقط مع فارس.</string>
-    <string name="leaderboard">المتصدرين</string>
     <string name="new_game">لعبة جديدة</string>
     <string name="not_signed">الرجاء تسجيل الدخول إلى ألعاب Google Play الخدمات</string>
-    <string name="score">أحرز هدفاً</string>
-    <string name="sign_in">تسجيل الدخول</string>
     <string name="signin_failure">غير قادر على تسجيل الدخول</string>
     <string name="signin_other_error">كان هناك مشكلة مع تسجيل الدخول، يرجى المحاولة مرة أخرى في وقت لاحق.</string>
-    <string name="undo">فك</string>
-    <string name="win">فيكتوار!</string>
+    <string name="win"> فوز</string>
+    <string name="score">نتيجة</string>
+    <string name="best">رقم قياسي</string>
+    <string name="instructions">المرور على جميع المربعات مرة واحدة فقط مع الفارس</string>
+    <string name="undo">عودة</string>
+    <string name="leaderboard"> الترتيب</string>
+    <string name="sign_in">تسجيل الدخول</string>
 </resources>
