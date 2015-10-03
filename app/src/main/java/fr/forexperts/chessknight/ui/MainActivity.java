@@ -28,8 +28,10 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -63,6 +65,8 @@ public class MainActivity extends Activity implements
     private static int mCurrentScoreValue = 1;
     private static int mGameNumberCounter = 1;
     private static int mVictoryNumber = 0;
+
+    private static InterstitialAd mInterstitialAd;
 
     private static GoogleApiClient mGoogleApiClient;
 
@@ -98,6 +102,19 @@ public class MainActivity extends Activity implements
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        // Set up Interstitial
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-7370519346258326/9965638495");
+        requestNewInterstitial();
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                newGame();
+            }
+        });
 
         // Set up scores
         mBestScore = PrefUtils.getBestScore(this);
@@ -176,30 +193,39 @@ public class MainActivity extends Activity implements
         }
     }
 
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
     @OnClick(R.id.new_game_button)
     public void newGame() {
-        // Clear the current score
-        mCurrentScoreValue = 1;
-        mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
+        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 5 == 0) {
+            mInterstitialAd.show();
+        } else {
+            // Clear the current score
+            mCurrentScoreValue = 1;
+            mCurrentScoreValueTextView.setText(Integer.toString(mCurrentScoreValue));
 
-        // Clear victory number
-        mVictoryNumber = 0;
+            // Clear victory number
+            mVictoryNumber = 0;
 
-        // Load the corresponding best score
-        mBestScoreValue = mBestScore.get(PrefUtils.getColumnsNumber(this));
-        mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
+            // Load the corresponding best score
+            mBestScoreValue = mBestScore.get(PrefUtils.getColumnsNumber(this));
+            mBestScoreValueTextView.setText(Integer.toString(mBestScoreValue));
 
-        // Clear the preferences
-        PrefUtils.clearForbiddenSquare(this);
-        PrefUtils.clearCurrentScore(this);
-        PrefUtils.clearPosition(this);
-        PrefUtils.clearVictoryNumber(this);
+            // Clear the preferences
+            PrefUtils.clearForbiddenSquare(this);
+            PrefUtils.clearCurrentScore(this);
+            PrefUtils.clearPosition(this);
+            PrefUtils.clearVictoryNumber(this);
 
-        // Clear the chessboard
-        mChessboard.newGame();
+            // Clear the chessboard
+            mChessboard.newGame();
 
-        // Increment game number counter
-        mGameNumberCounter++;
+            // Increment game number counter
+            mGameNumberCounter++;
+        }
     }
 
     public void newRound() {

@@ -184,6 +184,7 @@
                 android:textColor="@color/text_color" />
 
         </LinearLayout>
+
     </LinearLayout>
 
     <com.google.android.gms.ads.AdView
