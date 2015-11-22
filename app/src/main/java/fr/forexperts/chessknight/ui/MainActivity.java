@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements
 
     @OnClick(R.id.new_game_button)
     public void newGame() {
-        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 5 == 0) {
+        if (mInterstitialAd.isLoaded() && mGameNumberCounter % 3 == 0) {
             mInterstitialAd.show();
         } else {
             // Clear the current score
