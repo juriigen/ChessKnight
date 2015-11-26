@@ -36,6 +36,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameUtils;
 
+import com.kobakei.ratethisapp.RateThisApp;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -132,6 +134,13 @@ public class MainActivity extends Activity implements
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+
+        RateThisApp.Config config = new RateThisApp.Config(3, 3);
+        RateThisApp.init(config);
+        // Monitor launch times and interval from installation
+        RateThisApp.onStart(this);
+        // If the criteria is satisfied, "Rate this app" dialog will be shown
+        RateThisApp.showRateDialogIfNeeded(this);
     }
 
     @Override
