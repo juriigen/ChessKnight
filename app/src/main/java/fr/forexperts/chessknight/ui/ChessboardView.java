@@ -40,18 +40,20 @@ public class ChessboardView extends View {
     private static int columnsNumber = 3;
     private ArrayList<Integer> position;
     private ArrayList<Integer> forbiddenSquare;
+    private ArrayList<Integer> validMoves;
 
     private Paint darkPaint;
     private Paint brightPaint;
     private Paint redPaint;
+    private Paint greenPaint;
     private Paint whitePiecePaint;
-
-    private Paint redOutline;
 
     public ChessboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         x0 = y0 = sqSize = 0;
+
+        validMoves = new ArrayList<>();
 
         // Load last chessboard size
         columnsNumber = PrefUtils.getColumnsNumber(getContext());
@@ -87,16 +89,14 @@ public class ChessboardView extends View {
         brightPaint.setARGB(255, 192, 192, 192);
 
         redPaint = new Paint();
-        redPaint.setARGB(255, 255, 0, 0);
+        redPaint.setARGB(255, 200, 0, 0);
+
+        greenPaint = new Paint();
+        greenPaint.setARGB(255, 48, 142, 106);
 
         whitePiecePaint = new Paint();
         whitePiecePaint.setARGB(255, 255, 255, 255);
         whitePiecePaint.setAntiAlias(true);
-
-        redOutline = new Paint();
-        redOutline.setARGB(255, 255, 0, 0);
-        redOutline.setStyle(Paint.Style.STROKE);
-        redOutline.setAntiAlias(true);
     }
 
     @Override
@@ -116,6 +116,8 @@ public class ChessboardView extends View {
         sqSize = (Math.min(width, height) - (columnsNumber >> 1)) / columnsNumber;
         x0 = (width - sqSize * columnsNumber) / 2;
         y0 = (height - sqSize * columnsNumber) / 2;
+
+        updateValidMoves(selectedSquare);
 
         for (int x = 0; x < columnsNumber; x++) {
             for (int y = 0; y < columnsNumber; y++) {
@@ -140,17 +142,13 @@ public class ChessboardView extends View {
                         drawPiece(canvas, xCrd + sqSize / 2, yCrd + sqSize / 2);
                     }
                 }
-            }
-        }
 
-        // Draw red borders around the selected square
-        if (selectedSquare >= 0) {
-            int selX = getX(selectedSquare);
-            int selY = getY(selectedSquare);
-            redOutline.setStrokeWidth(sqSize / (float) (columnsNumber * 2));
-            int x0 = getXCrd(selX);
-            int y0 = getYCrd(selY);
-            canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, redOutline);
+                // Draw green square if it's a valid moves square
+                int currentSquare = getSquare(x, y);
+                if (validMoves.contains(currentSquare)) {
+                    canvas.drawRect(xCrd, yCrd, xCrd + sqSize, yCrd + sqSize, greenPaint);
+                }
+            }
         }
 
         if (isGameFinished(selectedSquare)) {
@@ -277,12 +275,23 @@ public class ChessboardView extends View {
     private boolean isGameFinished(int square) {
         for (int i = 0; i < columnsNumber; i++) {
             for (int j = 0; j < columnsNumber; j++) {
-                if (validMove(getX(square), getY(selectedSquare), i, j)) {
+                if (validMove(getX(square), getY(square), i, j)) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    private void updateValidMoves(int square) {
+        validMoves.clear();
+        for (int i = 0; i < columnsNumber; i++) {
+            for (int j = 0; j < columnsNumber; j++) {
+                if (validMove(getX(square), getY(square), i, j)) {
+                    validMoves.add(getSquare(i, j));
+                }
+            }
+        }
     }
 
     private int getXCrd(int x) {
