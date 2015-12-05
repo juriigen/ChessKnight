@@ -8,8 +8,8 @@ android {
         applicationId "fr.forexperts.cavalier"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 13
-        versionName "1.6.2"
+        versionCode 14
+        versionName "1.7"
     }
     buildTypes {
         release {
