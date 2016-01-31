@@ -1,0 +1,33 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Chess Knight</string>
+    <string name="action_settings">设置</string>
+    <string name="best">最好的</string>
+    <string name="change_size">更改大小</string>
+    <string name="continue_game">继续</string>
+    <string name="game_over">游戏结束！</string>
+    <string name="instructions">访问所有的广场恰好一度与骑士</string>
+    <string name="leaderboard">排行榜</string>
+    <string name="new_game">新游戏</string>
+    <string name="not_signed">请登录到谷歌Play游戏服务</string>
+    <string name="score">得分了</string>
+    <string name="sign_in">签到</string>
+    <string name="signin_failure">无法登录。</string>
+    <string name="signin_other_error">有一个问题，登录，请稍后再试。</string>
+    <string name="undo">复原</string>
+    <string name="win">你赢了！</string>
+</resources>

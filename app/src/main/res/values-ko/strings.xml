@@ -1,0 +1,33 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Chess Knight</string>
+    <string name="action_settings">설정</string>
+    <string name="best">베스트</string>
+    <string name="change_size">크기 변경</string>
+    <string name="continue_game">계속</string>
+    <string name="game_over">게임 끝!</string>
+    <string name="instructions">기사와 정확히 한 번 모든 사각형을 방문</string>
+    <string name="leaderboard">리더</string>
+    <string name="new_game">새로운 게임</string>
+    <string name="not_signed">구글 플레이 게임 서비스에 로그인하세요</string>
+    <string name="score">점수</string>
+    <string name="sign_in">로그인 </string>
+    <string name="signin_failure">로그인 할 수 없습니다.</string>
+    <string name="signin_other_error">로그인에 문제가 발생했습니다, 나중에 다시 시도하십시오.</string>
+    <string name="undo">취소</string>
+    <string name="win">네가 이겼다!</string>
+</resources>

@@ -1,0 +1,55 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin" >
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/chessboard_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"  />
+
+        <SeekBar
+            android:id="@+id/chessboard_size_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="12" />
+
+    </LinearLayout>
+
+    <Button
+        android:background="@color/button_material_dark"
+        android:gravity="center"
+        android:id="@+id/new_game_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/new_game"
+        android:textColor="@color/text_color" />
+
+</LinearLayout>

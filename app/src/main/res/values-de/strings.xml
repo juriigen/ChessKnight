@@ -1,0 +1,33 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Chess Knight</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="best">Beste</string>
+    <string name="change_size">Größe ändern</string>
+    <string name="continue_game">Fortsetzen</string>
+    <string name="game_over">Spiel Ist Aus!</string>
+    <string name="instructions">Besuchen Sie alle Felder genau einmal mit dem Ritter.</string>
+    <string name="leaderboard">Bestenliste</string>
+    <string name="new_game">Neues Spiel</string>
+    <string name="not_signed">Bitte melden Sie sich bei Google Play Games Services</string>
+    <string name="score">Ergebnis</string>
+    <string name="sign_in">Anmelden</string>
+    <string name="signin_failure">Nicht anmelden</string>
+    <string name="signin_other_error">Es gab ein Problem mit Sign-in, bitte versuchen Sie es später erneut.</string>
+    <string name="undo">Rückgängig Machen</string>
+    <string name="win">Sieg!</string>
+</resources>

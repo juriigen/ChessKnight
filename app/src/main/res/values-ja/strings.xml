@@ -1,0 +1,33 @@
+<!-- Copyright 2015 Baptiste Robert
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Chess Knight</string>
+    <string name="action_settings">[設定]</string>
+    <string name="best">最高</string>
+    <string name="change_size">サイズ変更</string>
+    <string name="continue_game">続けます</string>
+    <string name="game_over">ゲームオーバー！</string>
+    <string name="instructions">騎士と正確に一度、すべての正方形をご覧ください</string>
+    <string name="leaderboard">リーダーボード</string>
+    <string name="new_game">新しいゲーム</string>
+    <string name="not_signed">グーグルプレイゲームサービスにログインしてください</string>
+    <string name="score">スコア</string>
+    <string name="sign_in">ログイン</string>
+    <string name="signin_failure">サインインすることができません。</string>
+    <string name="signin_other_error">サインインに問題がありました。しばらくしてからもう一度お試しください。</string>
+    <string name="undo">取り消します </string>
+    <string name="win">あなたは勝ちます！</string>
+</resources>
